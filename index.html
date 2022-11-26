@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css"/>
+    <title>Live Chat</title>
+</head>
+
+<body>
+    <div class="image-container">
+        <img class="image"
+            src="https://i.gifer.com/origin/20/2044500a9a0cef20ef935c31946538a1.gif" />
+        <div class="live-bar">
+            <div class="live">
+                <span style="position: absolute; right: 25px;">LIVE</span>
+            </div>
+        </div>
+    </div>
+    <div class="top-chats">
+        Top Chats
+    </div>
+    <div class="chat-content">
+        <div class="chat" id="chat-data">
+        </div>
+    </div>
+    <div class="chat-input-container">
+        <span><input type="text" id="name" value="Anonymus" placeholder="Enter Name" readonly /><span>
+                <input onclick="updateName()" type="button" value="Edit" id="update-name"></input></span></span>
+        <input type="text" id="message" placeholder="Enter Your Comment and press enter to send"
+            class="chat-input" />
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
