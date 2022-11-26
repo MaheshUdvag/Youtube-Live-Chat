@@ -52,6 +52,9 @@ const updateName = () => {
  */
 const sendMessage = (message) => {
   const name = document.getElementById("name").value;
+  if (!name || !message) {
+    return;
+  }
   fetch(host + "/add-message", {
     method: "POST",
     body: JSON.stringify({
