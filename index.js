@@ -15,6 +15,10 @@ eventSource.onerror = function () {
   eventSource.close();
 };
 
+/**
+ * This method is called to append the
+ * response data to the document.
+ */
 function updateMessage(data) {
   const { name, message } = JSON.parse(data);
   const chats = document.getElementById("chat-data");
@@ -26,6 +30,11 @@ function updateMessage(data) {
     .scrollTo(0, document.querySelector(".chat-content").scrollHeight);
 }
 
+/**
+ * This method is called to update
+ * the user name and make it non
+ * editable until the user clicks on edit.
+ */
 const updateName = () => {
   const mode = document.getElementById("update-name").value;
   if (mode === "Edit") {
@@ -37,6 +46,10 @@ const updateName = () => {
   }
 };
 
+/**
+ * This method calls the API to send data
+ * to the server to save the chat message.
+ */
 const sendMessage = (message) => {
   const name = document.getElementById("name").value;
   fetch(host + "/add-message", {
@@ -49,13 +62,16 @@ const sendMessage = (message) => {
       "Content-Type": "application/json",
     },
   })
-    .then((data) => data.json())
-    .then((d) => console.log(d))
-    .catch((e) => console.log("error occurred"));
+    .then(() => console.log("Data Sent successfully"))
+    .catch((e) => console.log("error occurred", e));
 };
 
 var input = document.getElementById("message");
 
+/**
+ * Watch the keypress event and trigger the
+ * API on press of enter.
+ */
 input.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();

@@ -23,7 +23,6 @@ mongoose.connect(process.env.MONGO_URL, {
   useUnifiedTopology: true,
 });
 
-let changeStream;
 mongoose.connection
   .once("open", async () => {
     console.log("connection success");
@@ -32,12 +31,20 @@ mongoose.connection
 
 const db = mongoose.connection;
 
+/**
+ * API to clean data from
+ * the message collection.
+ */
 app.delete("/clean", (req, res) => {
   Message.deleteMany({})
     .then(() => res.send("success"))
     .catch((e) => res.send(e));
 });
 
+/**
+ * API to push data to the
+ * message collection.
+ */
 app.post("/add-message", (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
@@ -62,6 +69,11 @@ app.post("/add-message", (req, res) => {
     });
 });
 
+/**
+ * API to send events as and
+ * when message collection is
+ * updated.
+ */
 app.get("/", (req, res) => {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
@@ -69,8 +81,14 @@ app.get("/", (req, res) => {
     "Access-Control-Allow-Origin": "*",
     Connection: "keep-alive",
   });
+
+  /**
+   * Watch the message collection for
+   * Changes and send the data to the
+   * client.
+   */
   const msgCollection = db.collection("message");
-  changeStream = msgCollection.watch();
+  let changeStream = msgCollection.watch();
   changeStream.on("change", (change) => {
     if (change.operationType === "insert") {
       const messageDetails = change.fullDocument;
@@ -79,11 +97,17 @@ app.get("/", (req, res) => {
     }
   });
 
+  /**
+   * Log message when user exits
+   * the session and close the stream.
+   */
   res.on("close", () => {
-    console.log("close");
+    console.log("connection close");
     changeStream.close();
     res.end();
   });
 });
 
-app.listen(process.env.PORT || 5000, () => console.log("running"));
+app.listen(process.env.PORT || 5000, () =>
+  console.log("Server running on PORT - " + process.env.PORT)
+);
