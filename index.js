@@ -1,4 +1,6 @@
-const eventSource = new EventSource("http://localhost:5000");
+const host = "https://ytlivechat.herokuapp.com";
+
+const eventSource = new EventSource(host);
 
 eventSource.onopen = () => {
   console.log("connected");
@@ -37,7 +39,7 @@ const updateName = () => {
 
 const sendMessage = (message) => {
   const name = document.getElementById("name").value;
-  fetch("http://localhost:5000/add-message", {
+  fetch(host + "/add-message", {
     method: "POST",
     body: JSON.stringify({
       name,
