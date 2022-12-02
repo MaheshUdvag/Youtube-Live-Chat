@@ -1,4 +1,4 @@
-const host = "https://ytlivechat.herokuapp.com";
+const host = "https://lazy-lime-bream-kit.cyclic.app";
 
 const eventSource = new EventSource(host);
 
