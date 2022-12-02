@@ -88,9 +88,9 @@ app.get("/", (req, res) => {
    * client.
    */
   let changeStream;
-  const mongo = async () => {
+  db.once("open", async () => {
     const msgCollection = db.collection("message");
-    changeStream = await msgCollection.watch();
+    changeStream = msgCollection.watch();
     changeStream.on("change", (change) => {
       if (change.operationType === "insert") {
         const messageDetails = change.fullDocument;
@@ -98,9 +98,7 @@ app.get("/", (req, res) => {
         res.flush();
       }
     });
-  };
-
-  mongo();
+  }).on("error", (error) => console.error("Error:", error));
 
   /**
    * Log message when user exits
@@ -108,9 +106,7 @@ app.get("/", (req, res) => {
    */
   res.on("close", () => {
     console.log("connection close");
-    if (changeStream) {
-      changeStream.close();
-    }
+    changeStream.close();
     res.end();
   });
 });
