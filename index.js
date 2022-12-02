@@ -64,9 +64,7 @@ const sendMessage = (message) => {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then(() => console.log("Data Sent successfully"))
-    .catch((e) => console.log("error occurred", e));
+  }).catch((e) => console.log("error occurred", e));
 };
 
 var input = document.getElementById("message");
